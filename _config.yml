@@ -5,7 +5,7 @@ keywords: ECMAScript, Javascript, React, Typescript, Hexo, Netlify, ASP.NET Core
 author: Yuri Tsai
 language: zh-TW
 timezone: ''
-url: https://yuri-journal.me
+url: https://YuriTsaiTW.github.io/blog
 permalink: ':category/:year:month:day:hour/'
 permalink_defaults: null
 pretty_urls:
