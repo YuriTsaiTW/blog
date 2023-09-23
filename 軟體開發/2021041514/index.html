@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="google-site-verification" content="pZ-aKgYoFLXb0aX2M5bgd0NvdKdH9LWgjUR5X12lD8U"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>行動應用｜自動化開發階段的更版流程｜fastlane｜conventional-changelog - Yuri 學習隨筆</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Yuri 學習隨筆"><meta name="msapplication-TileImage" content="/img/favicon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Yuri 學習隨筆"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Developers love writing React Native code but no one likes deploying React Native app or distributing beta builds. - RNBoilerplate Docs(那些喜愛寫 React Native 的開發者，不會有人喜歡做建置、發布或上架的事情)"><meta property="og:type" content="blog"><meta property="og:title" content="行動應用｜自動化開發階段的更版流程｜fastlane｜conventional-changelog"><meta property="og:url" content="https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/"><meta property="og:site_name" content="Yuri 學習隨筆"><meta property="og:description" content="Developers love writing React Native code but no one likes deploying React Native app or distributing beta builds. - RNBoilerplate Docs(那些喜愛寫 React Native 的開發者，不會有人喜歡做建置、發布或上架的事情)"><meta property="og:locale" content="zh_TW"><meta property="og:image" content="https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/cover.png"><meta property="article:published_time" content="2021-04-15T14:26:22.000Z"><meta property="article:modified_time" content="2023-09-23T06:33:42.553Z"><meta property="article:author" content="Yuri Tsai"><meta property="article:tag" content="fastlane"><meta property="article:tag" content="React Native"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/cover.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/"},"headline":"Yuri 學習隨筆","image":["https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/cover.png"],"datePublished":"2021-04-15T14:26:22.000Z","dateModified":"2023-09-23T06:33:42.553Z","author":{"@type":"Person","name":"Yuri Tsai"},"description":"Developers love writing React Native code but no one likes deploying React Native app or distributing beta builds. - RNBoilerplate Docs(那些喜愛寫 React Native 的開發者，不會有人喜歡做建置、發布或上架的事情)"}</script><link rel="canonical" href="https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/"><link rel="icon" href="/blog/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://www.googletagmanager.com/gtag/js?id=G-RB9TX9FZV1" async></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-RB9TX9FZV1');</script><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.4.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/"><img src="/blog/img/logo.png" alt="Yuri 學習隨筆" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">首頁</a><a class="navbar-item" href="/blog/archives">彙整</a><a class="navbar-item" href="/blog/categories">分類</a><a class="navbar-item" href="/blog/tags">標籤</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="請我喝杯咖啡吧💖" href="https://www.buymeacoffee.com/yurijournaltw"><i class="fas fa-coffee"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜尋" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-9-tablet is-9-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/cover.png" alt="行動應用｜自動化開發階段的更版流程｜fastlane｜conventional-changelog"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-04-15T14:26:22.000Z" title="4/15/2021, 2:26:22 PM">2021-04-15</time>發表</span><span class="level-item"><time dateTime="2023-09-23T06:33:42.553Z" title="9/23/2023, 6:33:42 AM">2023-09-23</time>更新</span><span class="level-item"><a class="link-muted" href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></span><span class="level-item">10 分鐘讀完 (大約3417個字)</span></div></div><h1 class="title is-3 is-size-4-mobile">行動應用｜自動化開發階段的更版流程｜fastlane｜conventional-changelog</h1><div class="content"><blockquote><p>Developers love writing React Native code but no one likes deploying React Native app or distributing beta builds. -<a target="_blank" rel="noopener" href="https://thecodingmachine.github.io/react-native-boilerplate/docs/BetaBuild/"> RNBoilerplate Docs</a><br>(那些喜愛寫 React Native 的開發者，不會有人喜歡做建置、發布或上架的事情)</p>
+</blockquote>
+
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>當專案開發到了雛型階段時，會需要讓開發人員以外的人使用或測試。在 Web 開發中，只需要更新 server 中的靜態檔就能完成；但是在行動應用上，就需要建置出安裝檔，當使用者下載安裝後，才完成更版的動作。</p>
+<p>如果完全不靠工具和指令，每次建置、上傳檔案等都親力而為，其實花費不少時間。舉例來說，在 XCode 中產出安裝檔 ipa，需要經過以下步驟：</p>
+<ol>
+<li>選擇裝置 <code>Any iOS Device</code></li>
+<li><code>Product &gt; Archive</code>，通常會等 2~3 分</li>
+<li>在 Archives 列表視窗中點選 <code>Distribute app</code></li>
+<li>選擇部署方式。例如 <code>Enterprise</code></li>
+<li>選擇 <code>Manually manage signing</code></li>
+<li>選擇 <code>Distribution Certificate</code> &amp; <code>Provision Profile</code>，這時候會再等 1~2 分</li>
+<li>點選 <code>Export</code>，選擇輸出目錄</li>
+</ol>
+<p>到這裡大概就花了約 5 分鐘了，接著還需要打開 Dropbox，或是自家的空間上傳剛剛建置出的 ipa。為了給測試人員查看有哪些更新，還要再維護安裝頁中的變更紀錄。最後，需要通知有安裝 App 的人已經有新版釋出。</p>
+<p>做完一輪這些事情就花了至少 10 分鐘（還不包含建置前要做的版本管理）。如果在開發階段需要頻繁的釋出版本，可能就要比平常晚半小時，甚至一小時才能下班啊 😖</p>
+<h2 id="規劃更版流程"><a href="#規劃更版流程" class="headerlink" title="規劃更版流程"></a>規劃更版流程</h2><blockquote><p>當你發現同一件事情做了三次以上，未來也會繼續做時，就先停下來吧！</p>
+</blockquote>
+
+<p>手動做這些事情，除了浪費時間以外，也很容易增加出錯的機率。例如上傳到錯的檔案、版本標錯等。因此，我們需要仰賴工具，幫我們做這些千篇一律的任務，讓省下來的時間，去做有實際產出、有創造力的事 💪</p>
+<p>首先，必須先整理出要需要哪些任務，這些任務的前後關係，以及思考每個任務的執行內容。這部分會根據開發習慣、專案性質、產品開發階段的不同而會有不一樣的流程。只要有想清楚就好，沒有一定的標準。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig1.png" alt="規劃更版的流程"></p>
+<p>以我目前接手的專案來說，需要做的是建置雙系統的開發版 App 給內部人員。所以就規劃了以上流程。工具上，我主要會用以下兩種：</p>
+<ul>
+<li><p><strong><a target="_blank" rel="noopener" href="https://github.com/conventional-changelog/conventional-changelog">Conventional Changelog</a></strong>: 為 commit 增加分類、描述、關聯的 issue 等格式化訊息，並產出 CHANGELOG.md  </p>
+<p>前置準備-</p>
+<ol>
+<li>在全域安裝 commitizen 跟 conventional-changelog-cli<br><code>npm i -g commitizen conventional-changelog-cli</code></li>
+<li>在專案目錄下安裝 cz-conventional-changelog<br><code>npm i -D cz-conventional-changelog</code><br>安裝完成後，package.json 會自動加上一段設定<figure class="highlight json"><figcaption><span>package.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;config&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;commitizen&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./App4/node_modules/cz-conventional-changelog&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p><strong><a target="_blank" rel="noopener" href="https://fastlane.tools/">fastlane</a></strong>: 提供大量實用的 actions 和 plugins，以 ruby code 和 cli 做到任務的自動化 </p>
+<p>前置準備-</p>
+<ol>
+<li>可以參考 React Native Boilerplate Docs 的<a target="_blank" rel="noopener" href="https://thecodingmachine.github.io/react-native-boilerplate/docs/BetaBuild/#installing-fastlane">Installing Fastlane</a>。重點是要先有 MacOS😅</li>
+<li>在 ios 跟 android 的目錄下執行 <code>fastlane init</code>。兩個系統在 setup 時有些許差異，同樣可以參考上面連結。</li>
+<li>需要安裝某個 plugin 時，執行 <code>fastlane add_plugin xxx</code> 就可以囉！</li>
+<li>想查詢某個內建 action 或是 plugin 時，可以執行 <code>fastlane action xxx</code>，就可以在command line上看到很清楚的說明文件。</li>
+</ol>
+</li>
+</ul>
+<p>接下來就針對每個任務來分享我的實作方式吧！</p>
+<h2 id="任務實作"><a href="#任務實作" class="headerlink" title="任務實作"></a>任務實作</h2><h3 id="提交-commit"><a href="#提交-commit" class="headerlink" title="提交 commit"></a>提交 commit</h3><p>寫一份好的的commit，會幫助我們完成以下事情：</p>
+<ul>
+<li>更順暢地 code review</li>
+<li>團隊合作的版本控管，讓大家一看就知道那段時間在做什麼</li>
+<li>方便準備 release 相關文件(e.g. 產生CHANGELOG.md)</li>
+<li>提供 trace code 的線索</li>
+</ul>
+<p>為了方便操作，我們可以建立npm指令</p>
+<figure class="highlight json"><figcaption><span>package.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;script&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;cm&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx cz&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>將想變更的檔案加到stage，執行 <code>npm run cm</code> 後就可以顯示以下畫面：<br><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig6.png" alt="初始畫面"></p>
+<p>接著按照每個步驟填入分類、簡述、issue序號等，就可以完成一個有完整資訊的commit囉！</p>
+<h3 id="更新版本"><a href="#更新版本" class="headerlink" title="更新版本"></a>更新版本</h3><p>無論是 Android 還是 iOS，都會有兩個值去描述版本。由於兩邊的名稱都不太一樣，我這裡就取一致的中文名稱。</p>
+<ul>
+<li><p>版名：建議採<a target="_blank" rel="noopener" href="https://semver.org/lang/zh-TW/">Semantic Versioning</a>(major.minor.patch)。 主要用途是在上架商店中會顯示給使用者看。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>iOS</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名稱</td>
+<td>Version Number</td>
+<td>Version Name</td>
+</tr>
+<tr>
+<td>格式</td>
+<td>建議 Semantic Versioning</td>
+<td>同左</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>版號：建置號碼，主要用途是給商店的上架系統識別使用，並不會給使用者知道。此外，在兩個作業系統中，建置號碼的規則也不太一樣。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>iOS</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>格式</td>
+<td>建議 Semantic Versioning</td>
+<td>須為數字</td>
+</tr>
+<tr>
+<td>規則</td>
+<td>同版名中不能重複，不同版名間可以重複</td>
+<td>無論版名必須往上遞增</td>
+</tr>
+<tr>
+<td>限制</td>
+<td>無特定格式限制</td>
+<td>不能超過<strong>2100000000</strong></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>為了管理方便，我這裡採雙系統皆取一致的版名跟版號。版名的話就依 <code>package.json</code> 的 <code>version</code> 而定；版號的話因 Android 的限制比較多，所以就以 Android 的命名規則來取版號。</p>
+<p>版號邏輯可以根據喜好或維護方便而定。而我訂的版號規則是：</p>
+<ol>
+<li>固定八位數，格式為 <strong>yymmddnn</strong><ul>
+<li>yy：年份的後兩位數</li>
+<li>mm：月份，固定兩位數</li>
+<li>dd：日期，固定兩位數</li>
+<li>nn：建置序號，固定兩位數</li>
+</ul>
+</li>
+<li>同個日期就把建置序號從 00 往上遞增</li>
+<li>不同日期就把建置序號歸為 00</li>
+</ol>
+<p>在 fastlane 中，iOS 的版名跟版號都有內建的 action 可以讀寫；不過 Android 的部分就要另外安裝 plugin。</p>
+<table>
+<thead>
+<tr>
+<th>版名</th>
+<th>iOS</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>讀</td>
+<td><code>get_version_number</code></td>
+<td><code>get_version_name</code></td>
+</tr>
+<tr>
+<td>寫</td>
+<td><code>increment_version_number</code></td>
+<td><code>increment_version_name</code></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>版號</th>
+<th>iOS</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>讀</td>
+<td><code>get_build_number</code></td>
+<td><code>get_version_code</code></td>
+</tr>
+<tr>
+<td>寫</td>
+<td><code>increment_build_number</code></td>
+<td><code>increment_version_code</code></td>
+</tr>
+</tbody></table>
+<p>版名因為需要取得<code>package.json</code>，所以我們需要安裝 plugin <code>load_json</code>。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package = load_json(<span class="symbol">json_path:</span> <span class="string">&quot;../package.json&quot;</span>)</span><br><span class="line">curr_build_number = get_build_number().to_i</span><br><span class="line">datetime_number = Time.new.strftime(<span class="string">&#x27;%Y%m%d&#x27;</span>)[<span class="number">2</span>, <span class="number">6</span>].to_i * <span class="number">100</span></span><br><span class="line">diff = curr_build_number - datetime_number</span><br><span class="line">new_build_number = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> diff &gt;= <span class="number">0</span> <span class="comment"># same day</span></span><br><span class="line">  new_build_number = datetime_number + diff + <span class="number">1</span></span><br><span class="line"><span class="keyword">else</span> <span class="comment"># another day</span></span><br><span class="line">  new_build_number = datetime_number</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">increment_build_number(</span><br><span class="line">  <span class="symbol">build_number:</span> new_build_number</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="打版本-tag"><a href="#打版本-tag" class="headerlink" title="打版本 tag"></a>打版本 tag</h3><p>以我的需求來說，希望每次的更版在 git 上留下紀錄。因此我會把版名加上版號組成一個完整的版本名稱，接著在打到 git tag 上。</p>
+<p>需要使用的 action 有 <a target="_blank" rel="noopener" href="https://docs.fastlane.tools/actions/add_git_tag/">add_git_tag</a>。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">package = load_json(<span class="symbol">json_path:</span> <span class="string">&quot;../package.json&quot;</span>)</span><br><span class="line">version_name = package[<span class="string">&#x27;version&#x27;</span>]</span><br><span class="line">version_code = get_version_code()</span><br><span class="line">add_git_tag(</span><br><span class="line">  <span class="symbol">tag:</span> <span class="string">&quot;v&quot;</span> + version_name + <span class="string">&quot;-&quot;</span> + version_code</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="建置安裝檔"><a href="#建置安裝檔" class="headerlink" title="建置安裝檔"></a>建置安裝檔</h3><p>Android 中的建置階段非常簡單，不需要任何的驗證或設定，只需要知道這次要建置的是 Debug 版或是 Release 版就好。</p>
+<figure class="highlight ruby"><figcaption><span>Android</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相當於執行 gradlew clean &amp;&amp; gradlew assembleDebug</span></span><br><span class="line">gradle(<span class="symbol">task:</span> <span class="string">&quot;clean assembleDebug&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>iOS 的就比較麻煩，好在 fastlane 有提供介面相對友善的套件-<a target="_blank" rel="noopener" href="http://docs.fastlane.tools/actions/build_app/#usage">gym</a>。我們可以使用 <code>build_app</code> 這個 action 來完成建置的設定。</p>
+<figure class="highlight ruby"><figcaption><span>iOS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">build_app(</span><br><span class="line">  <span class="symbol">silent:</span> <span class="literal">true</span>,</span><br><span class="line">  <span class="symbol">clean:</span> <span class="literal">true</span>,</span><br><span class="line">  <span class="symbol">configuration:</span> <span class="string">&quot;Release&quot;</span>,  </span><br><span class="line">  <span class="symbol">scheme:</span> <span class="string">&quot;AppName&quot;</span>,</span><br><span class="line">  <span class="symbol">output_name:</span> <span class="string">&quot;app.ipa&quot;</span>,</span><br><span class="line">  <span class="symbol">export_options:</span> &#123;</span><br><span class="line">    <span class="comment"># 指定部署方式</span></span><br><span class="line">    <span class="symbol">method:</span> <span class="string">&quot;enterprise&quot;</span>,</span><br><span class="line">    <span class="comment"># 指定 provision profile</span></span><br><span class="line">    <span class="symbol">provisioningProfiles:</span> &#123;</span><br><span class="line">      <span class="string">&quot;app.bundle.indentifier&quot;</span> =&gt; <span class="string">&quot;ProvisionProfileName&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="上傳至-Dropbox"><a href="#上傳至-Dropbox" class="headerlink" title="上傳至 Dropbox"></a>上傳至 Dropbox</h3><p>產生安裝檔後，我們是選擇以 OTA 方式，將安裝檔放在雲空間供測試人員下載。如何建立 OTA 的安裝機制，可以參考<a target="_blank" rel="noopener" href="https://wenrongdev.com/install-ipa-with-ota/">這篇文章</a>。</p>
+<p>以 Dropbox 當作雲空間的話，設定的重點有以下：</p>
+<ol>
+<li><p>在 <a target="_blank" rel="noopener" href="https://www.dropbox.com/developers/apps">Dropbox Developers</a> 建立應用，然後取得 <strong>token</strong>。要注意的地方有以下：</p>
+<ul>
+<li>token 的期限要設為 <code>No expiration</code>，不然預設 15 分後就會到期。<br> <img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig4.png" alt="Settings &gt; OAuth2 設定 token"></li>
+<li>需要打開檔案的編輯權限 <code>file.content.write</code><br> <img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig5.png" alt="Permissions &gt; Individual Scopes &gt; Files and folders"></li>
+</ul>
+</li>
+<li><p>參考 fastlane 的<a target="_blank" rel="noopener" href="https://docs.fastlane.tools/best-practices/keys/">這份文件</a>，將 token 這種機敏資訊妥善管理。我這裡是使用 <a target="_blank" rel="noopener" href="https://github.com/bkeepers/dotenv">dotenv</a>，好處是不用更改本機的環境變數，透過 <code>gitignore</code> 方式將機敏檔案過濾掉。</p>
+<ul>
+<li><p>在專案根目錄下執行 <code>gem install dotenv</code> 安裝</p>
+</li>
+<li><p>在專案根目錄下新增 <code>.env.secret</code></p>
+<figure class="highlight js"><figcaption><span>.env.secret</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">DROPBOX_OAUTH_TOKEN</span>=<span class="string">&quot;xxx...&quot;</span></span><br><span class="line">     </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 Fastfile 中引入 dotenv 跟 剛剛建立的 <code>.env.secret</code></p>
+<figure class="highlight ruby"><figcaption><span>Fastfile</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fastlane_require <span class="string">&#x27;dotenv&#x27;</span></span><br><span class="line"></span><br><span class="line">before_all <span class="keyword">do</span></span><br><span class="line">  Dotenv.overload <span class="string">&#x27;../../.env.secret&#x27;</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">     </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>安裝 <a target="_blank" rel="noopener" href="https://github.com/ayoy/fastlane-plugin-dropbox">fastlane-plugin-dropbox</a>。欄位的注意事項有以下：</p>
+<ul>
+<li><code>write_mode</code>-寫入的模式，文件上有寫比較理想的方式是<code>update</code>，不過還沒弄清楚 <code>update_rev</code> 要如何設定，所以目前測試ＯＫ的是<code>overwrite</code></li>
+<li><code>file_path</code>-要使用安裝檔的絕對路徑</li>
+<li><code>dropbox_path</code>-中文名稱也ＯＫ。沒有這個欄位的話預設是上傳到根目錄</li>
+<li><code>access_token</code>-以 <code>ENV[name]</code> 來取得剛剛在 <code>.env.secret</code> 建立的 token 值<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dropbox(</span><br><span class="line">  <span class="symbol">write_mode:</span> <span class="string">&#x27;overwrite&#x27;</span>,</span><br><span class="line">  <span class="symbol">file_path:</span> <span class="string">&#x27;/Users/sss/xxx/ooo/ios/app.ipa&#x27;</span>,</span><br><span class="line">  <span class="symbol">dropbox_path:</span> <span class="string">&#x27;第一層目錄名稱/第二層目錄名稱&#x27;</span>,</span><br><span class="line">  <span class="symbol">access_token:</span> <span class="variable constant_">ENV</span>[<span class="string">&#x27;DROPBOX_OAUTH_TOKEN&#x27;</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h3 id="通知工作群組"><a href="#通知工作群組" class="headerlink" title="通知工作群組"></a>通知工作群組</h3><p>當安裝檔建置完成、上傳到雲空間後，相關人員就可以前往更新版本了。如果團隊中有使用會話群組，像是 slack 、 google chat 等，fastlane 有提供相關的 plugin 來幫我們做到主動通知的事情。</p>
+<ol>
+<li>首先安裝 <a target="_blank" rel="noopener" href="https://github.com/narlei/fastlane-plugin-google-chat">fastlane-plugin-google_chat</a><br><code>fastlane add_plugin google_chat</code></li>
+<li>在會話群組的聊天室名稱，右邊有個小三角形，點選後選擇「管理 Webhook」</li>
+<li>一開始如果沒有設定 webhook，會直接讓你輸入名稱跟圖片網址。<br>名稱可以輸入 fastlane，之後新增其他的服務連動，會比較清楚是哪個來源打的。<br>圖片網址可以不設，也可以取找對應的icon網址填入。</li>
+<li>點選「儲存」後就可以產生並取得 Webhook 的連結囉！</li>
+</ol>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig2.png" alt="在 Google Chat 設定並取得 Webhook"></p>
+<p>最後，參考作者的<a target="_blank" rel="noopener" href="https://github.com/narlei/fastlane-plugin-google-chat/blob/00b7dbf3dc144e642f05e77879d6a3009c1cf318/fastlane/Fastfile">範例</a>修改就ＯＫ了。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package = load_json(<span class="symbol">json_path:</span> <span class="string">&quot;../package.json&quot;</span>)</span><br><span class="line">curr_build_number = get_build_number()</span><br><span class="line"></span><br><span class="line">google_chat(</span><br><span class="line">    <span class="symbol">imageUrl:</span> <span class="string">&#x27;https://xxx.ooo.png&#x27;</span>,</span><br><span class="line">    <span class="symbol">webhook:</span> <span class="string">&#x27;https://chat.googleapis.com/v1/spaces/xxx/messages?key=ooo&amp;token=jjj&#x27;</span>,</span><br><span class="line">    <span class="symbol">title:</span> <span class="string">&#x27;ZZZ App 開發版&#x27;</span>,</span><br><span class="line">    <span class="symbol">description:</span> <span class="string">&#x27;Android Debug / iOS Enterprise 已更新，請前往下載安裝！&#x27;</span>,</span><br><span class="line">    <span class="symbol">section1Title:</span> <span class="string">&#x27;Version&#x27;</span>,</span><br><span class="line">    <span class="symbol">section1Description:</span> <span class="string">&quot;v&quot;</span> + package[<span class="string">&quot;version&quot;</span>] + <span class="string">&quot;-&quot;</span> + curr_build_number,</span><br><span class="line">    <span class="symbol">buttonTitle:</span> <span class="string">&quot;開啟下載安裝頁&quot;</span>,</span><br><span class="line">    <span class="symbol">buttonUrl:</span> <span class="string">&quot;https://fff.com&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig3.png" alt="訊息通知的顯示"></p>
+<h3 id="執行-fastlane-任務"><a href="#執行-fastlane-任務" class="headerlink" title="執行 fastlane 任務"></a>執行 fastlane 任務</h3><p>上面這些 fastlane 的任務，要怎麼串連起來呢？</p>
+<p>通常我們會把這些單一任務分別用 <code>private_lane</code>包覆起來，表示這是不能單獨執行的。接著再新增一個用 <code>lane</code>包覆起來的任務，工作內容就是依序執行這些私有任務。</p>
+<p>private_lane 的寫法：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">desc <span class="string">&quot;Android Debug: Build a Debug App&quot;</span></span><br><span class="line">  private_lane <span class="symbol">:debug_build</span> <span class="keyword">do</span></span><br><span class="line">    gradle(<span class="symbol">task:</span> <span class="string">&quot;clean assembleDebug&quot;</span>)</span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在 Android 裡的 lane</p>
+<figure class="highlight ruby"><figcaption><span>Android</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">desc <span class="string">&quot;Android Debug: Do all jobs&quot;</span></span><br><span class="line">  lane <span class="symbol">:debug_jobs</span> <span class="keyword">do</span></span><br><span class="line">    version_code</span><br><span class="line">    version_name</span><br><span class="line">    git_version_tag</span><br><span class="line">    debug_build</span><br><span class="line">    debug_upload</span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在 iOS 裡的 lane</p>
+<figure class="highlight ruby"><figcaption><span>iOS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">desc <span class="string">&quot;iOS Enterprise: Do all jobs&quot;</span></span><br><span class="line">  lane <span class="symbol">:enterprise_jobs</span> <span class="keyword">do</span></span><br><span class="line">    build_number</span><br><span class="line">    version</span><br><span class="line">    enterprise_archive</span><br><span class="line">    enterprise_upload</span><br><span class="line">    notify_chat</span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>為了更方便執行指令，可以新增npm指令。</p>
+<p>有個題外話，我在切到 ios 的目錄後，執行 fastlane 的前綴有加 <code>arch -x86_64</code>，原因是我目前使用 Mac m1，因為硬體上的限制才需要加。如果之後在安裝什麼或執行什麼時發生意外錯誤，可以試著加加看。 </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dist-dev-app&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd android &amp;&amp; fastlane debug_jobs &amp;&amp; cd .. &amp;&amp; cd ios &amp;&amp; arch -x86_64 fastlane enterprise_jobs &amp;&amp; cd ..&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="更新-CHANGELOG-md"><a href="#更新-CHANGELOG-md" class="headerlink" title="更新 CHANGELOG.md"></a>更新 CHANGELOG.md</h3><p>最後，就是產出 CHANGELOG.md，並更新到 git 上囉！</p>
+<p>同樣我們可以為冗長的 cli 新增 npm 指令：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;cg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;conventional-changelog -p angular -i CHANGELOG.md -s -r 0 &amp;&amp; git commit -am CHANGELOG.md&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/fig7.png" alt="CHANGELOG.md"></p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>在導入這些工具時，其實不到半天的時間就可以完成了。學習門檻來說，也不用太高，頂多只需要查詢一些 ruby 的基本語法等，算是很值得上手的工具。<br>比較重要的是要思考任務的安排合不合理，在自動化和後續維護上是不是可以更順暢；另外在部署上架版的流程和跟開發階段的流程勢必會不太一樣。到時候有什麼新想法，再跟大家分享囉 👋</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>行動應用｜自動化開發階段的更版流程｜fastlane｜conventional-changelog</p><p><a href="https://yuritsaitw.github.io/blog/軟體開發/2021041514/">https://yuritsaitw.github.io/blog/軟體開發/2021041514/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Yuri Tsai</p></div></div><div class="level-item is-narrow"><div><h6>發表於</h6><p>2021-04-15</p></div></div><div class="level-item is-narrow"><div><h6>更新於</h6><p>2023-09-23</p></div></div><div class="level-item is-narrow"><div><h6>許可協議</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/fastlane/">fastlane</a><a class="link-muted mr-2" rel="tag" href="/blog/tags/React-Native/">React Native</a></div><div class="sharethis-inline-share-buttons"></div><script src="https://platform-api.sharethis.com/js/sharethis.js#property=603f4a070e267500127ccaef&amp;product=inline-share-buttons" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜歡這篇文章嗎? 贊助一下作者吧!</h3><div class="buttons is-centered"><div class="likecoin-embed likecoin-button"><div></div><iframe scrolling="no" frameborder="0" src="https://button.like.co/in/embed/showwell0120/button?referrer=&lt;%- encodeURIComponent(post.permalink) %&gt;"></iframe></div><a class="button donate" href="https://www.buymeacoffee.com/yurijournaltw" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">AC 關鍵字計畫 | API 開發、測試、除錯一次到位！使用 MSW 快速上手 Mock API</span></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">評論</h3><script src="https://utteranc.es/client.js" repo="showwell0120/utterances-for-blog" issue-term="pathname" label="some-issue-label" theme="github-light" crossorigin="anonymous" async></script></div></div></div><!--!--><div class="column column-right is-3-tablet is-3-desktop is-3-widescreen  order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">文章目錄</h3><ul class="menu-list"><li><a class="level is-mobile" href="#前言"><span class="level-left"><span class="level-item">1</span><span class="level-item">前言</span></span></a></li><li><a class="level is-mobile" href="#規劃更版流程"><span class="level-left"><span class="level-item">2</span><span class="level-item">規劃更版流程</span></span></a></li><li><a class="level is-mobile" href="#任務實作"><span class="level-left"><span class="level-item">3</span><span class="level-item">任務實作</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#提交-commit"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">提交 commit</span></span></a></li><li><a class="level is-mobile" href="#更新版本"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">更新版本</span></span></a></li><li><a class="level is-mobile" href="#打版本-tag"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">打版本 tag</span></span></a></li><li><a class="level is-mobile" href="#建置安裝檔"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">建置安裝檔</span></span></a></li><li><a class="level is-mobile" href="#上傳至-Dropbox"><span class="level-left"><span class="level-item">3.5</span><span class="level-item">上傳至 Dropbox</span></span></a></li><li><a class="level is-mobile" href="#通知工作群組"><span class="level-left"><span class="level-item">3.6</span><span class="level-item">通知工作群組</span></span></a></li><li><a class="level is-mobile" href="#執行-fastlane-任務"><span class="level-left"><span class="level-item">3.7</span><span class="level-item">執行 fastlane 任務</span></span></a></li><li><a class="level is-mobile" href="#更新-CHANGELOG-md"><span class="level-left"><span class="level-item">3.8</span><span class="level-item">更新 CHANGELOG.md</span></span></a></li></ul></li><li><a class="level is-mobile" href="#結論"><span class="level-left"><span class="level-item">4</span><span class="level-item">結論</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/blog/js/toc.js" defer></script></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2023010913/"><img src="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2023010913/cover.png" alt="第一年的工作回顧 | 熱鬧點科技 Migo"></a></figure><div class="media-content"><p class="date"><time dateTime="2023-01-09T13:38:44.000Z">2023-01-09</time></p><p class="title"><a href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2023010913/">第一年的工作回顧 | 熱鬧點科技 Migo</a></p><p class="categories"><a href="/blog/categories/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/">職涯發展</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022061017/"><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022061017/cover.jpeg" alt="[譯] #3 React Query 的優化"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-06-10T17:36:18.000Z">2022-06-10</time></p><p class="title"><a href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022061017/">[譯] #3 React Query 的優化</a></p><p class="categories"><a href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060818/"><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060818/cover.jpeg" alt="[譯] #2 React Query 的資料轉換"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-06-08T18:20:51.000Z">2022-06-08</time></p><p class="title"><a href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060818/">[譯] #2 React Query 的資料轉換</a></p><p class="categories"><a href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060716/"><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060716/cover.png" alt="[譯] #1 React Query 的實用技巧"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-06-07T16:22:49.000Z">2022-06-07</time></p><p class="title"><a href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060716/">[譯] #1 React Query 的實用技巧</a></p><p class="categories"><a href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2022032211/"><img src="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2022032211/cover.png" alt="第一次的轉職 | 6 年的工作回顧 | 嘉實資訊 SysJust"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-03-22T11:16:15.000Z">2022-03-22</time></p><p class="title"><a href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2022032211/">第一次的轉職 | 6 年的工作回顧 | 嘉實資訊 SysJust</a></p><p class="categories"><a href="/blog/categories/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/">職涯發展</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/"><img src="/blog/img/logo.png" alt="Yuri 學習隨筆" height="28"></a><p class="is-size-7"><span>&copy; 2023 Yuri Tsai</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-TW");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到頁首" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此網站使用Cookie來改善您的體驗。",
+          dismiss: "知道了！",
+          allow: "允許使用Cookie",
+          deny: "拒絕",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="請輸入關鍵字..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"請輸入關鍵字...","untitled":"(無標題)","posts":"文章","pages":"頁面","categories":"分類","tags":"標籤"});
+        });</script></body></html>

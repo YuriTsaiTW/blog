@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="google-site-verification" content="pZ-aKgYoFLXb0aX2M5bgd0NvdKdH9LWgjUR5X12lD8U"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>AC 關鍵字計畫 | API 開發、測試、除錯一次到位！使用 MSW 快速上手 Mock API - Yuri 學習隨筆</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Yuri 學習隨筆"><meta name="msapplication-TileImage" content="/img/favicon.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Yuri 學習隨筆"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="本篇文章已刊載在AC Blog。 什麼是 API在認識 API 以前，我們直接從生活中的例子來認識介面 (Interface)。"><meta property="og:type" content="blog"><meta property="og:title" content="AC 關鍵字計畫 | API 開發、測試、除錯一次到位！使用 MSW 快速上手 Mock API"><meta property="og:url" content="https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/"><meta property="og:site_name" content="Yuri 學習隨筆"><meta property="og:description" content="本篇文章已刊載在AC Blog。 什麼是 API在認識 API 以前，我們直接從生活中的例子來認識介面 (Interface)。"><meta property="og:locale" content="zh_TW"><meta property="og:image" content="https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/cover.jpg"><meta property="article:published_time" content="2021-08-14T14:26:22.000Z"><meta property="article:modified_time" content="2023-09-23T06:33:42.557Z"><meta property="article:author" content="Yuri Tsai"><meta property="article:tag" content="API"><meta property="article:tag" content="MSW"><meta property="article:tag" content="JavaScript"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/cover.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/"},"headline":"Yuri 學習隨筆","image":["https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/cover.jpg"],"datePublished":"2021-08-14T14:26:22.000Z","dateModified":"2023-09-23T06:33:42.557Z","author":{"@type":"Person","name":"Yuri Tsai"},"description":"本篇文章已刊載在AC Blog。 什麼是 API在認識 API 以前，我們直接從生活中的例子來認識介面 (Interface)。"}</script><link rel="canonical" href="https://yuritsaitw.github.io/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/"><link rel="icon" href="/blog/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://www.googletagmanager.com/gtag/js?id=G-RB9TX9FZV1" async></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-RB9TX9FZV1');</script><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.4.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/"><img src="/blog/img/logo.png" alt="Yuri 學習隨筆" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">首頁</a><a class="navbar-item" href="/blog/archives">彙整</a><a class="navbar-item" href="/blog/categories">分類</a><a class="navbar-item" href="/blog/tags">標籤</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="請我喝杯咖啡吧💖" href="https://www.buymeacoffee.com/yurijournaltw"><i class="fas fa-coffee"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜尋" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-9-tablet is-9-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/cover.jpg" alt="AC 關鍵字計畫 | API 開發、測試、除錯一次到位！使用 MSW 快速上手 Mock API"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-08-14T14:26:22.000Z" title="8/14/2021, 2:26:22 PM">2021-08-14</time>發表</span><span class="level-item"><time dateTime="2023-09-23T06:33:42.557Z" title="9/23/2023, 6:33:42 AM">2023-09-23</time>更新</span><span class="level-item"><a class="link-muted" href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></span><span class="level-item">13 分鐘讀完 (大約4386個字)</span></div></div><h1 class="title is-3 is-size-4-mobile">AC 關鍵字計畫 | API 開發、測試、除錯一次到位！使用 MSW 快速上手 Mock API</h1><div class="content"><p>本篇文章已刊載在<a target="_blank" rel="noopener" href="https://tw.alphacamp.co/blog/learn-api-and-mock-service-worker">AC Blog</a>。</p>
+<h2 id="什麼是-API"><a href="#什麼是-API" class="headerlink" title="什麼是 API"></a>什麼是 API</h2><p>在認識 API 以前，我們直接從生活中的例子來認識介面 (Interface)。</p>
+<span id="more"></span>
+
+<p>忙碌的午後，「小美」想要喝罐可爾必思。於是她前往公司樓下的飲料販賣機，在「操作面板上」投硬幣跟按按鈕，販賣機裡的「系統」判斷金額是否符合，以及是按下哪個飲料的對應按鈕。判斷結束後，就把一罐可爾必思推出來。最後小美從取物口拿出，大口地暢飲。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/api.PNG"></p>
+<p>在上述例子裡，飲料販賣機的控制面板即為人機互動的「介面」，也就是等下待會要講的「API」。而小美呢，則是介面的使用者，對應到軟體開發的領域上是指 API 的使用者，也就是我們這些應用程式的開發者。</p>
+<p>API（Application Programming Interface）的字面意思是「應用程式介面」。就像飲料販賣機的介面一樣，API 是應用程式之間一套明確定義的溝通方法和接口。使用 API 的過程中，不需要理解內部複雜的運作，只需要知道要呼叫什麼方法，傳入對應參數，就能取得想要的結果。</p>
+<h3 id="Web-應用程式中的-API"><a href="#Web-應用程式中的-API" class="headerlink" title="Web 應用程式中的 API"></a>Web 應用程式中的 API</h3><p>在 Web 應用程式的開發情境下的 API 被稱為 Web API，在 Web API 作用時，客戶端（前端）和伺服器端（後端）會透過 HTTP 通訊協定來進行請求與回應。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/web-api.png" alt="原圖取自：AlphaCamp Blog"></p>
+<p>作為前端的開發者，為了要取得存放在系統的資訊，常常會需要以 Web API 來發送請求與後端溝通。因此通常需要做的事情有以下：</p>
+<ul>
+<li>閱讀 API 文件</li>
+<li>如果是第三方開發的應用（例如 Google、Facebook），可能需要註冊、驗證等程序</li>
+<li>撰寫有關 Web API 串接的函式</li>
+<li>在適當時機點呼叫對應的串接函式</li>
+</ul>
+<p>而後端的開發者，則是將擁有的資料庫開放給第三方使用。因此開發步驟大致會是這樣：</p>
+<ul>
+<li>撰寫一個明確的 API 文件，清楚定義 API 的使用方式及格式等等。</li>
+<li>按照文件開發一個 Web API，提供可外部呼叫的方法，用這個方式做為使用介面。</li>
+</ul>
+<h3 id="控制-API-的回傳結果，可能嗎？"><a href="#控制-API-的回傳結果，可能嗎？" class="headerlink" title="控制 API 的回傳結果，可能嗎？"></a>控制 API 的回傳結果，可能嗎？</h3><p>前端開發時，十之八九都會需要實作 API 的串接。你可能會先建立相關的函式模組，然後在元件或是狀態管理的程式碼中匯入，在適當時機點發出 API 的請求。</p>
+<p>問題來了，如果想要測試 API 回傳不同的結果下，元件的操作邏輯是否正常；或是現在正處於雛型（Prototype）開發的階段，在後端的 Web API 還沒完成的情況下，前端要超前部署產出具體的半成品等，前端這邊是不是可以先實作好 API 串接的部分，而且還能隨意控制 API 回傳的結果呢？</p>
+<p>舉個簡單的例子，在 <code>api.js</code> 中，定義了所有跟 API 串接的函式模組，其中，<code>isLoggedIn</code> 函式是檢查使用者是否已登入。</p>
+<ul>
+<li>api.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">isLoggedIn</span>(<span class="params"></span>) &#123;</span><br><span class="line">  axios.<span class="title function_">post</span>(<span class="string">&quot;/api/account/isLoggedIn&quot;</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>在元件－ <code>App.js</code> 中，我們匯入<code>isLoggedIn</code> 函式，並且在適當時機點呼叫它，如果已經登入，執行 A，否則執行 B。</p>
+<ul>
+<li>App.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; isLoggedIn &#125; <span class="keyword">from</span> <span class="string">&#x27;./api&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">await</span> <span class="keyword">function</span> <span class="title function_">initApp</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> isLoggedIn = <span class="keyword">await</span> <span class="title function_">isLoggedIn</span>();</span><br><span class="line">        <span class="keyword">if</span>(isLoggedIn) &#123;</span><br><span class="line">            <span class="comment">// 做 A 事...</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 做 B 事...</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="title class_">React</span>.<span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">initApp</span>();</span><br><span class="line">    &#125;, []);</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假設不變動 <code>App.js</code> 中的－    </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isLoggedIn = <span class="keyword">await</span> <span class="title function_">isLoggedIn</span>();</span><br></pre></td></tr></table></figure>
+<p>我們有辦法由前端控制 <code>isLoggedIn</code> 變數是 <code>true</code> 還是 <code>false</code>，來檢查相關的條件判斷嗎？</p>
+<p>這個問題，當然是 YES 囉！這就是今天要講的－<strong>Mock API</strong>。</p>
+<h2 id="API-開發、測試、除錯一次到位－Mock-API"><a href="#API-開發、測試、除錯一次到位－Mock-API" class="headerlink" title="API 開發、測試、除錯一次到位－Mock API"></a>API 開發、測試、除錯一次到位－Mock API</h2><p>先來說文解字一下，「Mock」是從單元測試的概念延伸而來的，主要是模擬真實的物件或類別，但是省略內部複雜的行為，讓測試過程可以更專注在本身的測試重點上。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/mock.PNG" alt="原圖取自：程式札記"></p>
+<p>同樣地，比起透過真實的後端 server 取得資料，我們有時候會比較想要自己決定資料的樣子，甚至是定義 API 的入口點（entrypoint）和參數欄位等等，但同時又不想變動前端呼叫 API 串接的部分。可以完成以上種種行為的方式，就是 Mock API。</p>
+<h3 id="使用-Mock-API-的理由"><a href="#使用-Mock-API-的理由" class="headerlink" title="使用 Mock API 的理由"></a>使用 Mock API 的理由</h3><p>最普遍的使用需求，應該就是希望在初期的開發階段，前端不需要等後端實作完成後才能接著進行。除了讓開發時程不用花到雙倍的時間，前後端雙方也能透過 Mock API 的過程更具體討論實作細節，達成品質與速度都能雙贏的目的 💪</p>
+<p>除此之外，以下的場合也能應用 Mock API 來完成：</p>
+<ul>
+<li>撰寫測試案例：進行元件測試或 E2E 測試時，可以撰寫各種 HTTP 狀態，或是不同回應資料時的測試案例。</li>
+<li>開發時的除錯：藉由修改 mocking 的內容，幫助元件或頁面進行除錯。</li>
+</ul>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/compare.PNG" alt="有沒有 mock API 的時程與品質比較"></p>
+<h2 id="向-MSW-Say-Hi！"><a href="#向-MSW-Say-Hi！" class="headerlink" title="向 MSW Say Hi！"></a>向 MSW Say Hi！</h2><p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/msw.png" alt="原圖取自：Mock Service Worker"></p>
+<p>MSW（Mock Service Worker）是一套可以實現 Mock API 的工具。最大的特色是能在網路層（Network）發出實際的請求（Request），並透過 Service Worker 攔截，回傳已經定義好的資料內容。</p>
+<p>另外，MSW 也擁有許多優點，像是：</p>
+<ul>
+<li>跟許多框架、工具都有很好的整合性，像是 React、Jest、Cypress 等。</li>
+<li>針對主流的 API 設計－RESTful 和 GraphQL 都有良好的支援。</li>
+<li>如果專案是以 TypeScript 開發，不須特別設定就能直接使用 TypeScript，享受強型別帶來的便利與好處。</li>
+<li>清楚好閱讀的官方文件，並且有範例程式，讓開發者能好上手。</li>
+</ul>
+<p>因此跟其他相似的工具來比較，像是 MirageJS、json-server，MSW 的下載使用量平均超過它們的兩倍，並且有成長的趨勢。這也表示相關的社群資源和討論聲量也會愈來愈豐富。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/trends.png" alt="原圖取自：npm trends"></p>
+<p>在熟悉 MSW 之前，我們先基礎認識它的底層機制－Service Worker，以及知道 RESTful 和 GraphQL 的差別。</p>
+<h3 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h3><p>Service Worker 是 Web Worker 的一種。除了可以在背景執行緒中運作，不影響使用者的網頁瀏覽體驗以外，最大特色是透過 cache 的機制來打造離線體驗。我們多少會碰到一些網站提供推播通知、暫存資料或是背景中同步等功能，這要多虧有 Service Worker 的實現。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/sw.png" alt="原圖取自：netlify"></p>
+<p>導入 Service Worker 有幾個重點步驟：</p>
+<ol>
+<li>檢查瀏覽器的支援度：基本上除了IE，大部分瀏覽器在某版本之後都有陸續支援，如果需要，可以加上檢查。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;serviceWorker&#x27;</span> <span class="keyword">in</span> navigator) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>註冊：呼叫全域方法 <code>navigator.serviceWorker.register()</code> 進行註冊。由於這是個 promise 函式，可以透過 <code>then</code> 跟 <code>catch</code> 來做完成後的處理。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&#x27;/serviceWorker.js&#x27;</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function"><span class="params">register</span> =&gt;</span> &#123;&#125;)</span><br><span class="line">    .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安裝：註冊完後，會觸發 <code>serviceWorker.js</code> 中的 <code>install</code> 事件，執行瀏覽器的離線快取功能。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>啟動：註冊完後，會觸發 <code>serviceWorker.js</code> 中的 <code>active</code> 事件，正式啟動 Service Worker。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;active&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>存取請求內容：當在這個 Service Worker 的可控範圍內偵測到 HTTP 請求，會觸發 <code>serviceWorker.js</code> 中的 <code>fetch</code> 事件實作 cache 的機制。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;fetch&#x27;</span>, <span class="keyword">async</span> <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>收發訊息：觸發 <code>serviceWorker.js</code> 中的 <code>message</code> 事件，處理各種請求階段的接收與發送訊息。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="RESTful-vs-GraphQL"><a href="#RESTful-vs-GraphQL" class="headerlink" title="RESTful vs. GraphQL"></a>RESTful vs. GraphQL</h3><p>RESTful 是一種 API 的設計風格，將有語意性的詞彙加上資料參數形成特定路由（Route），並運用 HTTP 各種定義的請求方式，向後端取得資源或是修改資源。</p>
+<p>因此 RESTful 最大的特點是，可以透過路由的結構清楚知道資料欄位跟操作方式，適合用來設計簡單或是結構較為單純的 API。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/rest.png" alt="原圖取自：how to graphql"></p>
+<p>GraphQL 是由 Facebook 在 2015 年發布的 open source。透過前端定義的資料結構，告訴後端返回相同資料結構的對應資料，來避免後端設計大量的 API route ，或是返回多餘的資料欄位。</p>
+<p>不過這種靈活性也增加了複雜性，通常會比較適合用來設計具規模或是結構比較交錯複雜的 API。</p>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/graphql.png" alt="原圖取自：how to graphql"></p>
+<h2 id="MSW-初體驗"><a href="#MSW-初體驗" class="headerlink" title="MSW 初體驗"></a>MSW 初體驗</h2><p>如果只是想先體驗看看，不用大費周章建立環境，可以參考<a target="_blank" rel="noopener" href="https://github.com/mswjs/examples"> MSW 建立的範例程式</a>，裡面有許多不同的範本專案。切到不同的專案環境後，就可以執行相關指令玩玩看囉😊</p>
+<ol>
+<li>clone 範本專案。執行以下指令，或是使用 GitHub Desktop 的 Clone Repository &gt; URL 輸入以下的網址部分。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mswjs/examples.git</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>切換到 examples 目錄。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> examples</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安裝所有依賴套件。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn</span><br><span class="line"><span class="comment"># or npm install</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>切換到特定目錄，例如：想看使用 React，加上 RESTful 的 API 設計會是什麼樣子，那麼就切換到 <code>rest-react</code>。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> examples/rest-react</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>執行以下指令，在本機建立 live server。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn start</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>打開瀏覽器輸入 <code>localhost:3001</code>。正常的話，可以看到頁面上有個簡易表單。按 F12 觀察 console，就會出現 [MSW] Mocking enabled.的訊息，表示 MSW 已經在運作囉！</li>
+</ol>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/example-1.png" alt="範例專案的起始頁面"></p>
+<ol start="7">
+<li>可以把 Dev Tool 切到 Network 觀察。在表單欄位隨意輸入後送出，會發現 Network 中發出了一個 login 的請求。</li>
+</ol>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/example-2.png" alt="Network中新增了一個login請求"></p>
+<ol start="8">
+<li>再切回 Console，可以看到 MSW 有印出請求的 Request、Reponse 的詳細內容。找到程式碼來對照看看，的確 MSW 發揮了作用，以程式中定義好的資料作為 Response 的資料，magic~</li>
+</ol>
+<p><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021081414/example-3.png" alt="Console中印出了login請求的詳細內容"></p>
+<h2 id="建置與導入-MSW"><a href="#建置與導入-MSW" class="headerlink" title="建置與導入 MSW"></a>建置與導入 MSW</h2><p>如果想引入專案環境中，其實非常簡單，基本上安裝 msw 這個套件就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add -DW msw</span><br><span class="line"><span class="comment"># or npm i msw -D</span></span><br></pre></td></tr></table></figure>
+
+<p>不過不少人，包括我自己是用 webpack 來打包前端程式和建立 live server。因此接下來的建置流程會再多介紹 webpack 的導入方式。</p>
+<ol>
+<li>安裝 MSW 以及執行 webpack 時所需的 plugins，作為開發用的依賴套件。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add -DW msw copy-webpack-plugin workbox-webpack-plugin</span><br><span class="line"><span class="comment"># or npm i msw copy-webpack-plugin workbox-webpack-plugin -D </span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>在專案的根目錄下建立 <code>public</code> 的子目錄，如果已經有的話省略。</p>
+</li>
+<li><p>在 <code>src</code> 的目錄下建立 <code>mocks</code> 的子目錄。</p>
+</li>
+<li><p>在 <code>mocks</code> 的目錄下建立兩個檔案－ <code>handlers.ts(js)</code> 以及 <code>browser.ts(js)</code>，待會會提到更多這兩個檔案的實作部分。</p>
+</li>
+<li><p>在專案的根目錄下開啟終端機，執行以下指令來建立負責產生 Service Worker 的程式檔 <code>mockServiceWorker.js</code>。如果有興趣的話，可以從這份檔案來看 MSW 如何設計 Service Worker 的架構與各種生命週期的事件喔！</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx msw init public/</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>在 <code>webpack.config.js</code> 或特定的 webpack 設定檔中，在 <code>plugins</code> 部分新增跟 Service Worker 相關的設定。<ul>
+<li><code>CopyWebpackPlugin</code>－ 將 <code>mockServiceWorker.js</code> 複製到 live server 中。</li>
+<li><code>WorkboxPlugin</code>－ 建立 Service Worker。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">CopyWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;copy-webpack-plugin&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">WorkboxPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;workbox-webpack-plugin&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">plugins</span>: [</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">CopyWebpackPlugin</span>([</span><br><span class="line">            &#123; <span class="attr">from</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./public&#x27;</span>, <span class="string">&#x27;mockServiceWorker.js&#x27;</span>), <span class="attr">to</span>: <span class="string">&#x27;mockServiceWorker.js&#x27;</span> &#125;,</span><br><span class="line">        ]),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">WorkboxPlugin</span>.<span class="title class_">GenerateSW</span>(),</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>在 <code>index.html</code> 偵測當前瀏覽器有無支援 Service Worker，有的話就以 <code>mockServiceWorker.js</code> 來註冊 Service Worker。</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// Check that service workers are supported</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">if</span> (<span class="string">&#x27;serviceWorker&#x27;</span> <span class="keyword">in</span> navigator) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// Use the window load event to keep the page load performant</span></span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&#x27;/mockServiceWorker.js&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果按照以上步驟做完的話，目錄結構應該會長這樣－</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- MyProject/</span><br><span class="line">   -- public/</span><br><span class="line">      -- mockServiceWorker.js</span><br><span class="line">   -- src/</span><br><span class="line">      -- mocks/</span><br><span class="line">         -- browser.ts(js)</span><br><span class="line">         -- handlers.ts(js)</span><br><span class="line">      -- index.html</span><br><span class="line">   -- webpack.config.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="快速上手-MSW"><a href="#快速上手-MSW" class="headerlink" title="快速上手 MSW"></a>快速上手 MSW</h2><p><code>handlers.ts(js)</code> 是負責撰寫 mock API 的實作細節。通常會建立一個陣列變數－<code>handlers</code> 來存放各個 API 串接的實作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> handlers = [];</span><br></pre></td></tr></table></figure>
+
+<p>舉上面範例程式的 login 請求作為例子，分別看看 RESTful 跟 GraphQL 這兩種 API 設計模式，MSW 會如何實作。</p>
+<h3 id="RESTful"><a href="#RESTful" class="headerlink" title="RESTful"></a>RESTful</h3><p>從 msw 匯入 <code>rest</code>。<code>rest</code> 提供了各種模擬 HTTP 的請求方式實作－</p>
+<ul>
+<li><code>rest.get()</code>：對應 <code>GET</code> 請求，取得資源。</li>
+<li><code>rest.post()</code>：對應 <code>POST</code> 請求，提交指定資源的實體。</li>
+<li><code>rest.put()</code>：對應 <code>PUT</code> 請求，上傳或取代指定的資源。</li>
+<li><code>rest.patch()</code>：對應 <code>PATCH</code> 請求，指定資源的部份修改。</li>
+<li><code>rest.delete()</code>：對應 <code>DELETE</code> 請求，刪除指定資源。</li>
+<li><code>rest.options()</code>：對應 <code>OPTIONS</code> 請求，查詢 server 支援的 HTTP 請求方式。</li>
+</ul>
+<p>這些方法需要固定傳入兩個參數－</p>
+<ul>
+<li><strong>entrypoint</strong>－API的路徑，可以 <code>/:someData</code> 的方式以路徑傳入資料參數。</li>
+<li><strong>resolver function</strong>－請求完成後的 resolve 函式。有三個參數可以操作，分別是－<ul>
+<li><code>req</code>：<code>req.body</code> 的物件可以取得 Request body 中的資料參數。</li>
+<li><code>res</code>：執行 <code>res()</code> 來回覆請求。</li>
+<li><code>ctx</code>：執行 <code>ctx.json(&#123;...&#125;)</code> 組合回傳的資料，定義想要的格式和內容。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; rest &#125; <span class="keyword">from</span> <span class="string">&#x27;msw&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> handlers = [</span><br><span class="line">  rest.<span class="title function_">post</span>(<span class="string">&#x27;/login/:someData&#x27;</span>, <span class="function">(<span class="params">req, res, ctx</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; username &#125; = req.<span class="property">body</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">res</span>(</span><br><span class="line">      ctx.<span class="title function_">json</span>(&#123;</span><br><span class="line">        <span class="attr">id</span>: <span class="string">&#x27;f79e82e8-c34a-4dc7-a49e-9fadc0979fda&#x27;</span>,</span><br><span class="line">        username,</span><br><span class="line">        <span class="attr">firstName</span>: <span class="string">&#x27;John&#x27;</span>,</span><br><span class="line">        <span class="attr">lastName</span>: <span class="string">&#x27;Maverick&#x27;</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    )</span><br><span class="line">  &#125;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="GraphQL"><a href="#GraphQL" class="headerlink" title="GraphQL"></a>GraphQL</h3><p>從 msw 匯入 <code>graphql</code>。<code>graphql</code> 實作了兩種操作方式：</p>
+<ul>
+<li><code>graphql.query()</code>：對應 GraphQL 的 <code>Query</code> 來完成資源的查詢。</li>
+<li><code>graphql.mutation()</code>：對應 GraphQL 的 <code>Mutation</code> 來完成資源新增、刪除、修改等會產生副作用的操作。</li>
+</ul>
+<p>這些方法需要固定傳入兩個參數：</p>
+<ul>
+<li><strong>name</strong>－已經定義好的 Query 或 Mutation 名稱。</li>
+<li><strong>resolver function</strong>－請求完成後的 resolve 函式。有三個參數可以操作，分別是－<ul>
+<li><code>req</code>：<code>req.variables</code> 的物件可以取得 Request 中的資料參數。</li>
+<li><code>res</code>：執行 <code>res()</code> 來回覆請求。</li>
+<li><code>ctx</code>：執行 <code>ctx.data(&#123;...&#125;)</code> 組合回傳的資料，根據定義好的欄位格式，設計想要的內容。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; graphql &#125; <span class="keyword">from</span> <span class="string">&#x27;msw&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> handlers = [</span><br><span class="line">  <span class="comment">// Capture a &quot;Login&quot; mutation</span></span><br><span class="line">  graphql.<span class="title function_">mutation</span>(<span class="string">&#x27;Login&#x27;</span>, <span class="function">(<span class="params">req, res, ctx</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; username &#125; = req.<span class="property">variables</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">res</span>(</span><br><span class="line">      ctx.<span class="title function_">data</span>(&#123;</span><br><span class="line">        <span class="attr">user</span>: &#123;</span><br><span class="line">          username,</span><br><span class="line">          <span class="attr">id</span>: <span class="string">&#x27;f79e82e8-c34a-4dc7-a49e-9fadc0979fda&#x27;</span>,</span><br><span class="line">          <span class="attr">firstName</span>: <span class="string">&#x27;John&#x27;</span>,</span><br><span class="line">          <span class="attr">lastName</span>: <span class="string">&#x27;Maverick&#x27;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    )</span><br><span class="line">  &#125;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>當我們寫好 handlers 後，在 <code>browser.ts(js)</code> 中就可以新增負責初始化 MSW 的變數，並且傳入 handlers 作為初始化的參數， 讓 MSW 知道遇到哪些請求後要執行 mock API 的動作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; setupWorker &#125; <span class="keyword">from</span> <span class="string">&#x27;msw&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; handlers &#125; <span class="keyword">from</span> <span class="string">&#x27;./handlers&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// This configures a Service Worker with the given request handlers.</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> worker = <span class="title function_">setupWorker</span>(...handlers);</span><br></pre></td></tr></table></figure>
+
+<p>通常我們會在本機的開發環境，或是執行測試時，才會希望啟動 MSW。因此我們可以在主程式的進入點加上環境的條件判斷。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; worker &#125; <span class="keyword">from</span> <span class="string">&#x27;./mocks/browser&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isTesting || process.<span class="property">env</span>.<span class="property">NODE_ENV</span> === <span class="string">&#x27;development&#x27;</span>) &#123;</span><br><span class="line">    worker.<span class="title function_">start</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>針對不同專案找出最適合的 API 設計，以及讓前端可以在面對各種資料情況時，都能提供良好的介面與瀏覽體驗。這些事情都可以透過 Mock API 的過程中實現。希望透過今天的介紹，讓大家對於 Mock API 有更深的了解，並且感受 MSW 擁有的魅力與好處🥳</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://tw.alphacamp.co/blog/api-introduction-understand-web-api-http-json">API是什麼？認識 Web API、HTTP 和 JSON 資料交換格式</a></li>
+<li><a target="_blank" rel="noopener" href="https://cythilya.github.io/2017/07/16/service-worker/">Service Worker</a></li>
+<li><a target="_blank" rel="noopener" href="https://tw.alphacamp.co/blog/rest-restful-api">什麼是REST? 認識 RESTful API 路由語義化設計風格</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/GraphQL">GraphQL wiki</a></li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>AC 關鍵字計畫 | API 開發、測試、除錯一次到位！使用 MSW 快速上手 Mock API</p><p><a href="https://yuritsaitw.github.io/blog/軟體開發/2021081414/">https://yuritsaitw.github.io/blog/軟體開發/2021081414/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Yuri Tsai</p></div></div><div class="level-item is-narrow"><div><h6>發表於</h6><p>2021-08-14</p></div></div><div class="level-item is-narrow"><div><h6>更新於</h6><p>2023-09-23</p></div></div><div class="level-item is-narrow"><div><h6>許可協議</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/API/">API</a><a class="link-muted mr-2" rel="tag" href="/blog/tags/MSW/">MSW</a><a class="link-muted mr-2" rel="tag" href="/blog/tags/JavaScript/">JavaScript</a></div><div class="sharethis-inline-share-buttons"></div><script src="https://platform-api.sharethis.com/js/sharethis.js#property=603f4a070e267500127ccaef&amp;product=inline-share-buttons" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜歡這篇文章嗎? 贊助一下作者吧!</h3><div class="buttons is-centered"><div class="likecoin-embed likecoin-button"><div></div><iframe scrolling="no" frameborder="0" src="https://button.like.co/in/embed/showwell0120/button?referrer=&lt;%- encodeURIComponent(post.permalink) %&gt;"></iframe></div><a class="button donate" href="https://www.buymeacoffee.com/yurijournaltw" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021102816/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">ModernWeb&#039;21 | 系列心得文(I) | 10 場 F2E 會有興趣的議程</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2021041514/"><span class="level-item">行動應用｜自動化開發階段的更版流程｜fastlane｜conventional-changelog</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">評論</h3><script src="https://utteranc.es/client.js" repo="showwell0120/utterances-for-blog" issue-term="pathname" label="some-issue-label" theme="github-light" crossorigin="anonymous" async></script></div></div></div><!--!--><div class="column column-right is-3-tablet is-3-desktop is-3-widescreen  order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">文章目錄</h3><ul class="menu-list"><li><a class="level is-mobile" href="#什麼是-API"><span class="level-left"><span class="level-item">1</span><span class="level-item">什麼是 API</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Web-應用程式中的-API"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">Web 應用程式中的 API</span></span></a></li><li><a class="level is-mobile" href="#控制-API-的回傳結果，可能嗎？"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">控制 API 的回傳結果，可能嗎？</span></span></a></li></ul></li><li><a class="level is-mobile" href="#API-開發、測試、除錯一次到位－Mock-API"><span class="level-left"><span class="level-item">2</span><span class="level-item">API 開發、測試、除錯一次到位－Mock API</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#使用-Mock-API-的理由"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">使用 Mock API 的理由</span></span></a></li></ul></li><li><a class="level is-mobile" href="#向-MSW-Say-Hi！"><span class="level-left"><span class="level-item">3</span><span class="level-item">向 MSW Say Hi！</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Service-Worker"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">Service Worker</span></span></a></li><li><a class="level is-mobile" href="#RESTful-vs-GraphQL"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">RESTful vs. GraphQL</span></span></a></li></ul></li><li><a class="level is-mobile" href="#MSW-初體驗"><span class="level-left"><span class="level-item">4</span><span class="level-item">MSW 初體驗</span></span></a></li><li><a class="level is-mobile" href="#建置與導入-MSW"><span class="level-left"><span class="level-item">5</span><span class="level-item">建置與導入 MSW</span></span></a></li><li><a class="level is-mobile" href="#快速上手-MSW"><span class="level-left"><span class="level-item">6</span><span class="level-item">快速上手 MSW</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#RESTful"><span class="level-left"><span class="level-item">6.1</span><span class="level-item">RESTful</span></span></a></li><li><a class="level is-mobile" href="#GraphQL"><span class="level-left"><span class="level-item">6.2</span><span class="level-item">GraphQL</span></span></a></li></ul></li><li><a class="level is-mobile" href="#小結"><span class="level-left"><span class="level-item">7</span><span class="level-item">小結</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Reference"><span class="level-left"><span class="level-item">7.1</span><span class="level-item">Reference</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/blog/js/toc.js" defer></script></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2023010913/"><img src="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2023010913/cover.png" alt="第一年的工作回顧 | 熱鬧點科技 Migo"></a></figure><div class="media-content"><p class="date"><time dateTime="2023-01-09T13:38:44.000Z">2023-01-09</time></p><p class="title"><a href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2023010913/">第一年的工作回顧 | 熱鬧點科技 Migo</a></p><p class="categories"><a href="/blog/categories/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/">職涯發展</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022061017/"><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022061017/cover.jpeg" alt="[譯] #3 React Query 的優化"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-06-10T17:36:18.000Z">2022-06-10</time></p><p class="title"><a href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022061017/">[譯] #3 React Query 的優化</a></p><p class="categories"><a href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060818/"><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060818/cover.jpeg" alt="[譯] #2 React Query 的資料轉換"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-06-08T18:20:51.000Z">2022-06-08</time></p><p class="title"><a href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060818/">[譯] #2 React Query 的資料轉換</a></p><p class="categories"><a href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060716/"><img src="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060716/cover.png" alt="[譯] #1 React Query 的實用技巧"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-06-07T16:22:49.000Z">2022-06-07</time></p><p class="title"><a href="/blog/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/2022060716/">[譯] #1 React Query 的實用技巧</a></p><p class="categories"><a href="/blog/categories/%E8%BB%9F%E9%AB%94%E9%96%8B%E7%99%BC/">軟體開發</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2022032211/"><img src="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2022032211/cover.png" alt="第一次的轉職 | 6 年的工作回顧 | 嘉實資訊 SysJust"></a></figure><div class="media-content"><p class="date"><time dateTime="2022-03-22T11:16:15.000Z">2022-03-22</time></p><p class="title"><a href="/blog/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/2022032211/">第一次的轉職 | 6 年的工作回顧 | 嘉實資訊 SysJust</a></p><p class="categories"><a href="/blog/categories/%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95/">職涯發展</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/"><img src="/blog/img/logo.png" alt="Yuri 學習隨筆" height="28"></a><p class="is-size-7"><span>&copy; 2023 Yuri Tsai</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-TW");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到頁首" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此網站使用Cookie來改善您的體驗。",
+          dismiss: "知道了！",
+          allow: "允許使用Cookie",
+          deny: "拒絕",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="請輸入關鍵字..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"請輸入關鍵字...","untitled":"(無標題)","posts":"文章","pages":"頁面","categories":"分類","tags":"標籤"});
+        });</script></body></html>
