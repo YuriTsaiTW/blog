@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "/widget/promote.json",
+  "description": "Promote widget configurations",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "promote",
+      "nullable": false
+    },
+    "topic": {
+      "type": "string",
+      "description": "Topic name",
+      "examples": ["Topic name"],
+      "nullable": true
+    },
+    "description": {
+      "type": "string",
+      "description": "Description",
+      "examples": ["Description"],
+      "nullable": true
+    },
+    "picture": {
+      "type": "string",
+      "description": "URL or path to the picture",
+      "nullable": true
+    },
+    "picture_link": {
+      "type": "string",
+      "description": "URL or path to the picture link",
+      "nullable": false
+    },
+    "links": {
+      "description": "Buy links",
+      "nullable": true
+    }
+  },
+  "required": ["type", "picture_link"]
+}
