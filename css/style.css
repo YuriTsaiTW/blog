@@ -389,7 +389,7 @@ th:not([align]) {
 }
 html {
   background-color: #f7f7f7;
-  font-size: 16px;
+  font-size: 14px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   min-width: 300px;
@@ -10258,7 +10258,6 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  line-height: 1.8;
 }
 body > .section {
   flex-grow: 1;
@@ -10347,12 +10346,12 @@ body > .section {
   padding-bottom: 0 !important;
 }
 .ml-1,
-.mx-1 {
+.mx-1,
+.article-licensing .licensing-meta .icons .icon {
   margin-left: 0.25rem !important;
 }
 .mr-1,
-.mx-1,
-.article-licensing .licensing-meta .icon {
+.mx-1 {
   margin-right: 0.25rem !important;
 }
 .ml-n1,
@@ -10745,17 +10744,9 @@ body > .section {
   right: 0;
   top: 0;
 }
-.image.is-240x240 {
-  height: 240px;
-  width: 240px;
-}
 .image .avatar {
   height: 100%;
   object-fit: cover;
-}
-.image .picture {
-  height: 100%;
-  object-fit: contain;
 }
 .image .fill {
   object-fit: cover;
@@ -10847,10 +10838,6 @@ article.article .content code {
   background: transparent;
   overflow-wrap: break-word;
 }
-article.article .content blockquote {
-  background-color: transparent;
-  font-style: italic;
-}
 article.article .content blockquote.pullquote {
   float: right;
   max-width: 50%;
@@ -10860,17 +10847,16 @@ article.article .content blockquote.pullquote {
 article.article .content blockquote footer strong + cite {
   margin-left: 0.5em;
 }
-article.article .content img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
 article.article .content .message.message-immersive {
   border-radius: 0;
   margin: 0 -1.5rem 1.5rem -1.5rem;
 }
 article.article .content .message.message-immersive .message-body {
   border: none;
+}
+article.article .article-tags {
+  display: flex;
+  flex-wrap: wrap;
 }
 .rtl {
   direction: rtl;
@@ -10927,7 +10913,7 @@ article.article .content .message.message-immersive .message-body {
 .article-licensing .licensing-title {
   line-height: 1.2;
 }
-.article-licensing .licensing-meta .icon {
+.article-licensing .licensing-meta .icons .icon {
   width: 1.2em;
   height: 1.2em;
   font-size: 1.2em;
@@ -10950,6 +10936,9 @@ a.article-nav-next span {
 }
 .navbar-main {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.navbar-main .navbar-container {
+  overflow-x: auto;
 }
 .navbar-main .navbar-menu,
 .navbar-main .navbar-start,
@@ -10978,13 +10967,6 @@ a.article-nav-next span {
   padding: 1.25rem 0.75rem;
   margin: 0 0;
 }
-.navbar-main .navbar-item.navbar-logo {
-  padding: 0;
-  padding-right: 2rem;
-}
-.navbar-main .navbar-item.navbar-logo img {
-  max-height: 4.5rem;
-}
 .navbar-main .navbar-item.is-active {
   background-color: transparent;
 }
@@ -10998,6 +10980,15 @@ a.article-nav-next span {
   }
   .navbar-main .navbar-end {
     margin-left: 0;
+  }
+}
+.navbar-logo img {
+  max-height: 1.75rem;
+}
+@media screen and (min-width: 1088px) {
+  .navbar > .container .navbar-menu,
+  .container > .navbar .navbar-menu {
+    margin-right: 0rem;
   }
 }
 @media screen and (max-width: 768px) {
@@ -11286,7 +11277,6 @@ figure.highlight table tr:not(:last-child) td {
   padding-bottom: 0;
 }
 figure.highlight pre {
-  font-size: 1rem !important;
   padding: 0;
   overflow: visible;
 }
@@ -11347,6 +11337,9 @@ figure.highlight .section {
   min-width: inherit;
   border-radius: inherit;
 }
+figure.highlight.foldable div.level-left {
+  cursor: pointer;
+}
 .gist table tr:hover {
   background: transparent;
 }
@@ -11385,6 +11378,39 @@ figure.highlight .section {
 }
 .level.is-multiline {
   flex-wrap: wrap;
+}
+@media screen and (max-width: 768px) {
+  .widget.card#toc {
+    display: none;
+    position: fixed;
+    margin: 1rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+  }
+  .widget.card#toc .card-content {
+    padding: 0;
+  }
+  .widget.card#toc .menu {
+    padding: 1.5rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+  #toc-mask {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: rgba(0,0,0,0.7);
+  }
+  .widget.card#toc.is-active,
+  #toc-mask.is-active {
+    display: block;
+  }
 }
 .donate {
   position: relative;
@@ -11517,33 +11543,6 @@ figure.highlight .section {
 .gallery-item .caption {
   color: #7a7a7a;
 }
-@media screen and (max-width: 768px) {
-  #toc {
-    display: none;
-    position: fixed;
-    margin: 1rem;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    max-height: calc(100vh - 2rem);
-    overflow-y: auto;
-  }
-  #toc-mask {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 99;
-    background: rgba(0,0,0,0.7);
-  }
-  #toc.is-active,
-  #toc-mask.is-active {
-    display: block;
-  }
-}
 .pace {
   user-select: none;
   pointer-events: none;
@@ -11568,6 +11567,9 @@ figure.highlight .section {
   line-height: inherit;
 }
 .MathJax,
+.MathJax_Display,
+.MJXc-display,
+.MathJax_SVG_Display,
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
@@ -11674,24 +11676,4 @@ figure.highlight .section {
   .section {
     padding: 1.5rem 1rem;
   }
-}
-.lc-page-header {
-  display: none;
-  height: 0px;
-}
-.likecoin-button {
-  position: relative;
-  width: 100%;
-  max-width: 485px;
-  max-height: 240px;
-}
-.likecoin-button > div {
-  padding-top: 49.48454%;
-}
-.likecoin-button > iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
