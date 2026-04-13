@@ -76,10 +76,9 @@ search:
     type: insight
 comment:
     type: utterances
-    repo: showwell0120/utterances-for-blog
+    repo: YuriTsaiTW/utterances-for-blog
     issue_term: pathname
-    issue_number: 100
-    label: some-issue-label
+    label: blog-comment
     theme: github-light
 donates:
     -
