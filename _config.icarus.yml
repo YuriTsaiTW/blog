@@ -97,7 +97,7 @@ widgets:
         position: left
         type: profile
         author: Yuri
-        author_title: 主業是貓奴兼園丁🌱，副業是前端開發😎
+        author_title: 北漂仔 x 台南查某囝 x 😼🐶🏕️🏸🍮💻🎧
         location: New Taipei City, Taiwan
         avatar:
         avatar_rounded: true
@@ -106,19 +106,18 @@ widgets:
         position: left
         type: links
         links:
-            ECMAScript關鍵30天-天瓏: https://www.tenlong.com.tw/products/9789864349197
-            ECMAScript關鍵30天-博客來: https://www.books.com.tw/products/0010907980
-            ECMAScript關鍵30天-金石堂: https://www.kingstone.com.tw/basic/2013120607606
-            ECMAScript關鍵30天-momo: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9507720
-            ECMAScript關鍵30天-讀墨: https://readmoo.com/book/210214657000101
+            天瓏: https://www.tenlong.com.tw/products/9789864349197
+            博客來: https://www.books.com.tw/products/0010907980
+            金石堂: https://www.kingstone.com.tw/basic/2013120607606
+            momo: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9507720
+            讀墨: https://readmoo.com/book/210214657000101
     -
         position: left
         type: links
         links:
-            Facebook: https://www.facebook.com/yurijournal.tw
+            GitHub: https://github.com/YuriTsaiTW
+            LinkedIn: https://www.linkedin.com/in/hsiuhuitsai/
             iT邦幫忙: https://ithelp.ithome.com.tw/users/20110962/profile
-            GitHub: https://github.com/showwell0120
-            CV: https://www.canva.com/design/DAEL_FC2F0I/f65yVy7utY01UjAw_big8Q/view?utm_content=DAEL_FC2F0I&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton
     -
         position: right
         type: toc

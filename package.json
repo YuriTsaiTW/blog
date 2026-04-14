@@ -1,5 +1,5 @@
 {
-  "name": "hexo-site",
+  "name": "yuri-blog",
   "version": "0.0.0",
   "scripts": {
     "post": "hexo new $npm_config_title",
@@ -26,5 +26,8 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-theme-icarus": "^6.1.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4"
   }
 }
