@@ -1,8 +1,8 @@
 version: 5.1.0
 variant: default
-logo: /img/logo.png
+logo:
 head:
-    favicon: /img/favicon.ico
+    favicon: /img/me.png
     manifest:
         name: 
         short_name: 
@@ -45,7 +45,7 @@ navbar:
         分類: /categories
         標籤: /tags
     links:
-        請我喝杯咖啡吧💖:
+        支持 Yuri:
             icon: fas fa-coffee
             url: https://www.buymeacoffee.com/yurijournaltw
 footer:
@@ -96,21 +96,12 @@ widgets:
     -
         position: left
         type: profile
-        author: Yuri
+        author: Yuri Tsai
         author_title: 北漂仔 x 台南查某囝 x 😼🐶🏕️🏸🍮💻🎧
         location: New Taipei City, Taiwan
-        avatar:
+        avatar: /img/me.png
         avatar_rounded: true
         gravatar:
-    -
-        position: left
-        type: links
-        links:
-            天瓏: https://www.tenlong.com.tw/products/9789864349197
-            博客來: https://www.books.com.tw/products/0010907980
-            金石堂: https://www.kingstone.com.tw/basic/2013120607606
-            momo: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9507720
-            讀墨: https://readmoo.com/book/210214657000101
     -
         position: left
         type: links
@@ -118,6 +109,17 @@ widgets:
             GitHub: https://github.com/YuriTsaiTW
             LinkedIn: https://www.linkedin.com/in/hsiuhuitsai/
             iT邦幫忙: https://ithelp.ithome.com.tw/users/20110962/profile
+    -
+        position: left
+        type: book_links
+        title: 適合前端小白的第一本書－ECMAScript關鍵30天
+        image: /img/book.png
+        links:
+            天瓏: https://www.tenlong.com.tw/products/9789864349197
+            博客來: https://www.books.com.tw/products/0010907980
+            金石堂: https://www.kingstone.com.tw/basic/2013120607606
+            momo: https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9507720
+            讀墨: https://readmoo.com/book/210214657000101
     -
         position: right
         type: toc

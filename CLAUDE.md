@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 專案概述
 
-「Yuri 學習隨筆」個人部落格，使用 Hexo 7 靜態網站產生器搭配 Icarus 6 主題，部署於 GitHub Pages。語系為 zh-TW。
+使用 Hexo 7 靜態網站產生器搭配 Icarus 6 主題，部署於 GitHub Pages。語系為 zh-TW。
 
 ## 常用指令
 
